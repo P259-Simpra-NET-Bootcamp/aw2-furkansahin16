@@ -1,0 +1,14 @@
+﻿namespace SimpraApi.Base.Utilities.Results;
+
+public abstract class CommonResponse : IResponse
+{
+    public bool IsSuccess { get; private set; }
+    public string Message { get; private set; }
+    public CommonResponse(bool isSuccess, string message)
+    {
+        this.IsSuccess = isSuccess;
+        this.Message = message;
+    }
+
+    public CommonResponse(bool isSuccess) : this(isSuccess, isSuccess ? "Success" : "Error") { }
+}
