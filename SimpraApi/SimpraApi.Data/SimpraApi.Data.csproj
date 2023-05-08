@@ -11,8 +11,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Extensions\" />
 	  <Folder Include="SeedData\" />
-	  <Folder Include="UnitOfWork\" />
 	</ItemGroup>
 </Project>

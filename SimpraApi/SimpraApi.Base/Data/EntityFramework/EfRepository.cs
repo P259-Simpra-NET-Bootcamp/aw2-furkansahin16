@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 
 namespace SimpraApi.Base;
-public abstract class EfRepository<TEntity> : ICommandRepository<TEntity>, IQueryRepository<TEntity>
+public abstract class EfRepository<TEntity> : IRepository<TEntity>, ICommandRepository<TEntity>, IQueryRepository<TEntity>
     where TEntity : BaseEntity
 {
     protected readonly DbContext _context;

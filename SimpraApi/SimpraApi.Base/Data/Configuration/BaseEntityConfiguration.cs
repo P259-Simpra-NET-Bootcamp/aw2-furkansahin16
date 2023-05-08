@@ -10,5 +10,8 @@ public class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.Property(x => x.Status).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
+        builder.Property(x => x.CreatedBy).HasMaxLength(36).IsRequired(false);
+
+        builder.HasIndex(x => x.Id).IsUnique();
     }
 }

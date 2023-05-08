@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpraApi.Domain;
 
-public class Staff : BaseEntity
+[Table("Staff",Schema ="dbo")]
+public class Staff : SoftDeletableEntity
 {
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;

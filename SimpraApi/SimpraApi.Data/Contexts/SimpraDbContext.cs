@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace SimpraApi.Data;
+﻿namespace SimpraApi.Data;
 public class SimpraDbContext : DbContext
 {
 	public SimpraDbContext(DbContextOptions<SimpraDbContext> options) : base(options)
