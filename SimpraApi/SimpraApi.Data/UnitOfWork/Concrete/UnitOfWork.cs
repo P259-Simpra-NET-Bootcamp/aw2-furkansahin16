@@ -44,7 +44,7 @@ public class UnitOfWork : IUnitOfWork
         }
         catch (DbUpdateException ex)
         {
-            return ex;
+            return new DbUpdateException("An error is occured in saving process!" + ex.HelpLink);
         }
         finally
         {
@@ -65,7 +65,7 @@ public class UnitOfWork : IUnitOfWork
             catch (DbUpdateException ex)
             {
                 await transaction.RollbackAsync();
-                return ex;
+                return new DbUpdateException("An error is occured in saving process!" + ex.HelpLink);
             }
             finally
             {

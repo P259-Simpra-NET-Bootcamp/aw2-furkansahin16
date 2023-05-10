@@ -19,7 +19,6 @@ public class Startup
         services.AddControllers();
         services.AddHttpContextAccessor();
         services.AddCustomSwaggerExtension();
-        services.AddDataServices(Configuration)
     }
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {

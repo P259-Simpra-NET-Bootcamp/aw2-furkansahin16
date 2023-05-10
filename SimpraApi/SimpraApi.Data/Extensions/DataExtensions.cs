@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SimpraApi.Data;
 
-public static class DbContextExtension
+public static class DataExtensions
 {
     public static IServiceCollection AddDataServices(this IServiceCollection services, IConfiguration configuration)
     {

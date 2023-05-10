@@ -10,26 +10,22 @@ public class EfRepository<TEntity> : IRepository<TEntity>
         _context = context;
         _table = _context.Set<TEntity>();
     }
-    public async Task<TEntity> AddAsync(TEntity entity)
+    public async Task AddAsync(TEntity entity)
     {
-        var entry = await _table.AddAsync(entity);
-        return entry.Entity;
+        await _table.AddAsync(entity);
     }
-    public async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities)
+    public async Task AddRangeAsync(IEnumerable<TEntity> entities)
     {
         await _table.AddRangeAsync(entities);
-        return entities;
     }
-    public async Task<TEntity> UpdateAsync(TEntity entity)
+    public async Task UpdateAsync(TEntity entity)
     {
-        var entry = await Task.FromResult(_table.Update(entity));
-        return entry.Entity;
+        await Task.FromResult(_table.Update(entity));
     }
     public Task DeleteAsync(TEntity entity) => Task.FromResult(_table.Remove(entity));
     public async Task<IEnumerable<TEntity>> GetAllAsync(bool tracking = true) => await GetAllActives(tracking).ToListAsync();
     public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, bool tracking = true) => await GetAllActives(tracking).Where(filter).ToListAsync();
     public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> expression, bool tracking = true) => await GetAllActives(tracking).FirstOrDefaultAsync(expression);
-    public async Task<TEntity?> GetByIdAsync(int id, bool tracking = true) => await GetAllActives(tracking).FirstOrDefaultAsync(x => x.Id == id);
     public Task<bool> AnyAsync(Expression<Func<TEntity, bool>>? filter = null) => filter is null ? GetAllActives().AnyAsync() : GetAllActives().AnyAsync(filter);
     protected IQueryable<TEntity> GetAllActives(bool tracking = true)
     {
