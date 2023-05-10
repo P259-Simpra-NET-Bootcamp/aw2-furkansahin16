@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SimpraApi.Data.SeedData;
 
 namespace SimpraApi.Data;
 
@@ -20,5 +21,7 @@ public class StaffConfiguration : SoftDeletableEntityConfiguration<Staff>
 
         builder.HasIndex(x => x.Email).IsUnique();
         builder.HasIndex(x => new { x.LastName, x.Country });
+
+        builder.HasData(DummyDataGenerator.GenerateDummyData(50));
     }
 }

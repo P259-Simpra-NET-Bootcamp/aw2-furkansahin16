@@ -1,5 +1,5 @@
 ﻿namespace SimpraApi.Base;
-public abstract class EfRepository<TEntity> : IRepository<TEntity>, ICommandRepository<TEntity>, IQueryRepository<TEntity>
+public class EfRepository<TEntity> : IRepository<TEntity>
     where TEntity : BaseEntity
 {
     protected readonly DbContext _context;
@@ -14,6 +14,11 @@ public abstract class EfRepository<TEntity> : IRepository<TEntity>, ICommandRepo
     {
         var entry = await _table.AddAsync(entity);
         return entry.Entity;
+    }
+    public async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities)
+    {
+        await _table.AddRangeAsync(entities);
+        return entities;
     }
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
@@ -31,4 +36,5 @@ public abstract class EfRepository<TEntity> : IRepository<TEntity>, ICommandRepo
         var entites = _table.Where(x => x.Status != Status.Deleted);
         return tracking ? entites : entites.AsNoTracking();
     }
+
 }

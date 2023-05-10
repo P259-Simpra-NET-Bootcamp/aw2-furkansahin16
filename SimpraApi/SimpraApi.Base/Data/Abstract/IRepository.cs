@@ -1,4 +1,4 @@
 ﻿namespace SimpraApi.Base;
-public interface IRepository<TEntity> where TEntity : BaseEntity
+public interface IRepository<TEntity> : ICommandRepository<TEntity>,IQueryRepository<TEntity> where TEntity : BaseEntity
 {
 }

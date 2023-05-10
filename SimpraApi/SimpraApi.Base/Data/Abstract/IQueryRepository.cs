@@ -1,5 +1,5 @@
 ﻿namespace SimpraApi.Base;
-public interface IQueryRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+public interface IQueryRepository<TEntity> where TEntity : BaseEntity
 {
     Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> expression, bool tracking = true);
     Task<TEntity?> GetByIdAsync(int id, bool tracking = true);

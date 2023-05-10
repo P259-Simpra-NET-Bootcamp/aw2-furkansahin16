@@ -12,7 +12,7 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity
     {
         var entityType = typeof(TEntity);
-        if (_repositories.ContainsKey(entityType))
+        if (!_repositories.ContainsKey(entityType))
         {
             var repositoryType = typeof(EfRepository<>).MakeGenericType(entityType);
             var instance = Activator.CreateInstance(repositoryType, _context);
