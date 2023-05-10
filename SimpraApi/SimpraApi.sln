@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpraApi.Domain", "SimpraA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpraApi.Data", "SimpraApi.Data\SimpraApi.Data.csproj", "{57F4EE5E-BFB1-45F9-A871-39A6F23D6C44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpraApi.Business", "SimpraApi.Business\SimpraApi.Business.csproj", "{D24A5874-CD1D-42A7-9EB4-CDCD59EA0028}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{57F4EE5E-BFB1-45F9-A871-39A6F23D6C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57F4EE5E-BFB1-45F9-A871-39A6F23D6C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57F4EE5E-BFB1-45F9-A871-39A6F23D6C44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D24A5874-CD1D-42A7-9EB4-CDCD59EA0028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24A5874-CD1D-42A7-9EB4-CDCD59EA0028}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24A5874-CD1D-42A7-9EB4-CDCD59EA0028}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24A5874-CD1D-42A7-9EB4-CDCD59EA0028}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
