@@ -32,12 +32,12 @@ public class SimpraDbContext : DbContext
         var user = _contextAccessor?.HttpContext.User.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "admin";
         foreach(var entry in entries)
         {
-            _ = entry.State switch
+            switch (entry.State)
             {
-                EntityState.Added => SetAddedEntity(entry, user),
-                EntityState.Modified => SetModifiedEntity(entry, user),
-                EntityState.Deleted => SetDeletedEntity(entry, user)
-            };
+                case EntityState.Added: SetAddedEntity(entry, user); break;
+                case EntityState.Modified: SetModifiedEntity(entry, user); break;
+                case EntityState.Deleted: SetDeletedEntity(entry, user); break;
+            }
         }
     }
 

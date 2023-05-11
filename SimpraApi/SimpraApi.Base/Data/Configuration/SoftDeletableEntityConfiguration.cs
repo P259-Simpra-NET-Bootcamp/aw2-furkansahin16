@@ -5,7 +5,6 @@ public class SoftDeletableEntityConfiguration<TEntity> : AuditableEntityConfigur
     public override void Configure(EntityTypeBuilder<TEntity> builder)
     {
         base.Configure(builder);
-        builder.Property(x => x.DeletedAt).IsRequired(false);
         builder.Property(x => x.DeletedBy).HasMaxLength(36).IsRequired(false);
     }
 }

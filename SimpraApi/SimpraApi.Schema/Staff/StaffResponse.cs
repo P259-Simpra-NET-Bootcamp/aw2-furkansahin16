@@ -1,7 +1,6 @@
 ﻿using SimpraApi.Base;
 
 namespace SimpraApi.Schema;
-
 public class StaffResponse : BaseResponse
 {
     public string FirstName { get; set; } = null!;
@@ -13,5 +12,4 @@ public class StaffResponse : BaseResponse
     public string? City { get; set; }
     public string Country { get; set; } = null!;
     public string? Province { get; set; }
-    
 }

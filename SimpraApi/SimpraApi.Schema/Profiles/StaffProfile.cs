@@ -3,7 +3,8 @@ public class StaffProfile : Profile
 {
 	public StaffProfile()
 	{
-		CreateMap<StaffRequest, Staff>();
+		CreateMap<StaffCreateRequest, Staff>();
+		CreateMap<StaffUpdateRequest, Staff>();
 		CreateMap<Staff, StaffResponse>();
 	}
 }

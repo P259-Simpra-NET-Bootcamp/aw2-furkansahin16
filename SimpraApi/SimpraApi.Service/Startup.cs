@@ -1,10 +1,4 @@
-﻿
-using SimpraApi.Data;
-
-namespace SimpraApi.Service;
-
-
-
+﻿namespace SimpraApi.Service;
 
 public class Startup
 {
@@ -19,10 +13,13 @@ public class Startup
         services.AddControllers();
         services.AddHttpContextAccessor();
         services.AddCustomSwaggerExtension();
+        services.AddFluentValidationExtension();
+        services.AddBusinessServices(Configuration);
+        //services.AddScoped<NotFoundFilter>();
     }
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if(env.IsDevelopment())
+        if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }

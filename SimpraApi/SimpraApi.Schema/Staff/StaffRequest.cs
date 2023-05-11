@@ -1,7 +1,7 @@
 ﻿using SimpraApi.Base;
 
 namespace SimpraApi.Schema;
-public class StaffRequest : BaseRequest
+public abstract class StaffRequest : BaseRequest
 {
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;

@@ -5,7 +5,6 @@ public class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity
     {
         builder.Property(x => x.Id).IsRequired(true).ValueGeneratedOnAdd();
         builder.Property(x => x.Status).IsRequired();
-        builder.Property(x => x.CreatedAt).IsRequired();
         builder.Property(x => x.CreatedBy).HasMaxLength(36).IsRequired(false);
 
         builder.HasKey(x => x.Id);

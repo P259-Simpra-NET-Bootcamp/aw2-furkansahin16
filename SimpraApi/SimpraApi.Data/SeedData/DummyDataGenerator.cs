@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Bogus.Extensions;
 
 namespace SimpraApi.Data.SeedData;
 
@@ -7,22 +8,23 @@ public static class DummyDataGenerator
     public static IEnumerable<Staff> GenerateDummyData(int dataCount)
     {
         var faker = new Faker<Staff>()
-            .Ignore(x => x.CreatedAt)
-            .Ignore(x => x.CreatedBy)
             .Ignore(x => x.DeletedBy)
             .Ignore(x => x.DeletedAt)
             .Ignore(x => x.UpdatedAt)
             .Ignore(x => x.UpdatedBy)
-            .RuleFor(x => x.Id, s => s.UniqueIndex)
-            .RuleFor(x => x.FirstName, s => s.Person.FirstName)
-            .RuleFor(x => x.LastName, s => s.Person.LastName)
-            .RuleFor(x => x.Email, s => s.Person.Email)
-            .RuleFor(x => x.Phone, s => s.Person.Phone)
-            .RuleFor(x => x.DateOfBirth, s => s.Person.DateOfBirth)
-            .RuleFor(x => x.AddressLine, s => s.Address.StreetAddress())
-            .RuleFor(x => x.City, s => s.Address.City())
-            .RuleFor(x => x.Country, s => s.Address.Country())
-            .RuleFor(x => x.Province, s => s.Address.State());
+            .RuleFor(x => x.CreatedAt, f => DateTime.UtcNow)
+            .RuleFor(x => x.CreatedBy, f => "admin")
+            .RuleFor(x => x.Status, f => Status.Added)
+            .RuleFor(x => x.Id, f => f.IndexFaker + 1)
+            .RuleFor(x => x.FirstName, f => f.Person.FirstName)
+            .RuleFor(x => x.LastName, f => f.Person.LastName)
+            .RuleFor(x => x.Email, f => f.Person.Email)
+            .RuleFor(x => x.Phone, f => f.Phone.PhoneNumber("###########"))
+            .RuleFor(x => x.DateOfBirth, f => f.Person.DateOfBirth)
+            .RuleFor(x => x.AddressLine, f => f.Address.StreetAddress().ClampLength(max: 50))
+            .RuleFor(x => x.City, f => f.Address.City().ClampLength(max: 30))
+            .RuleFor(x => x.Country, f => f.Address.Country().ClampLength(max: 20))
+            .RuleFor(x => x.Province, f => f.Address.State().ClampLength(max: 30));
 
         var dummyData = faker.Generate(dataCount);
         return dummyData;

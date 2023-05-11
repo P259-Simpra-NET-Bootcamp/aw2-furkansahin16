@@ -1,7 +1,7 @@
 ﻿namespace SimpraApi.Base.Utilities.Results;
 
 public abstract class CommonDataResponse<T> : CommonResponse, IDataResponse<T> 
-    where T : BaseResponse, IEnumerable<BaseResponse>
+    where T : class
 {
     public T Data { get; set; } = null!;
     public CommonDataResponse(bool isSuccess, T data) : base(isSuccess) => this.Data = data;
