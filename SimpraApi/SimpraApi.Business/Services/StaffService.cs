@@ -39,7 +39,7 @@ public class StaffService : IStaffService
     public async Task<IResponse> DeleteStaffByIdAsync(int id)
     {
         var model = await _repository.GetAsync(x => x.Id == id);
-        await _repository.DeleteAsync(model);
+        await _repository.DeleteAsync(model!);
         await _unitOfWork.SaveChangesAsync();
 
         return new SuccessResponse(String.Format(Messages.DeleteSuccess, ModelName));
@@ -47,7 +47,7 @@ public class StaffService : IStaffService
 
     public async Task<IResponse> GetAllAsync()
     {
-        if (await _repository.AnyAsync()) return new ErrorResponse(String.Format(Messages.ListError, ModelName));
+        if (!await _repository.AnyAsync()) return new ErrorResponse(String.Format(Messages.ListError, ModelName));
 
         var models = await _repository.GetAllAsync(false);
 

@@ -1,6 +1,8 @@
-﻿namespace SimpraApi.Schema;
+﻿using SimpraApi.Base;
 
-public class StaffUpdateRequest : StaffRequest
+namespace SimpraApi.Schema;
+
+public class StaffUpdateRequest : StaffRequest,IBaseUpdateRequest
 {
     public int Id { get; set; }
 }

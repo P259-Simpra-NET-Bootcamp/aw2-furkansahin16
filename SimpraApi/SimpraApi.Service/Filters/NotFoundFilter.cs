@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using SimpraApi.Data;
+using System.Reflection;
 
 namespace SimpraApi.Service.Filters;
-// TODO: İki kere db instance'ı alıp, iki kere id'ye göre buluyoruz. Kontrol et.
+// TODO: Aynı veriyi hem serviste hem filter'da iki database'den arıyoruz. Kontrol et maliyetli mi?
 public class NotFoundFilter : ActionFilterAttribute
 {
     private readonly SimpraDbContext _context;
+    private string ModelName = string.Empty;
+    private object? Table;
 
     public NotFoundFilter(SimpraDbContext context)
     {
@@ -16,25 +19,48 @@ public class NotFoundFilter : ActionFilterAttribute
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         var controllerName = context.Controller.GetType().Name;
-        var modelName = controllerName.Replace("Controller", string.Empty);
+        this.ModelName = controllerName.Replace("Controller", string.Empty);
+        var entityType = _context.Model.GetEntityTypes().FirstOrDefault(x => x.ClrType.Name == this.ModelName)!.ClrType;
+        var dbSetMethod = typeof(DbContext).GetMethods().First(x => x.Name == "Set" && !x.GetParameters().Any()).MakeGenericMethod(entityType);
+        this.Table = dbSetMethod.Invoke(_context, null)!;
+
+        switch (context.HttpContext.Request.Method)
+        {
+            case "GET": CheckEntityFromQuery(context); break;
+            case "PUT": CheckEntityFromBody(context); break;
+        }
+    }
+
+    private void CheckEntityFromBody(ActionExecutingContext context)
+    {
+        if (!context.ActionDescriptor.Parameters.Any(x => x.Name == "request"))
+        {
+            var request = context.ActionArguments["request"] as IBaseUpdateRequest;
+            context.Result = CheckIfExist(request!.Id);
+        }
+    }
+
+    private void CheckEntityFromQuery(ActionExecutingContext context)
+    {
         if (context.ActionDescriptor.Parameters.Any(x => x.Name == "id"))
         {
-            int id = (int)context.ActionArguments["id"];
-
-            var type = _context.Model.GetEntityTypes().FirstOrDefault(x => x.ClrType.Name == modelName)?.ClrType;
-
-            var hasRecord = false;
-
-            if (type is not null)
+            if (!context.ActionArguments.Any(x => x.Key == "id"))
             {
-                var dbSetMethod = typeof(DbContext).GetMethods().First(x => x.Name == "Set" && !x.GetParameters().Any()).MakeGenericMethod(type);
-                var table = dbSetMethod.Invoke(_context, null);
-
-                var findMethod = table.GetType().GetMethods().First(x => x.Name == "Find");
-                hasRecord = findMethod.Invoke(table, new object[] { new object[] { id } }) != null;
+                context.Result = new BadRequestResult();
+                return;
             }
+            int id = (int)context.ActionArguments["id"]!;
 
-            if (!hasRecord) context.Result = new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, modelName, id)));
+            context.Result = CheckIfExist(id);
         }
+    }
+
+    private ObjectResult? CheckIfExist(int id)
+    {
+        var findMethod = this.Table!.GetType().GetMethods().First(x => x.Name == "Find");
+        var entity = findMethod.Invoke(this.Table, new object[] { new object[] { id } });
+        return (entity is null)
+            ? new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, this.ModelName, id)))
+            : default;
     }
 }

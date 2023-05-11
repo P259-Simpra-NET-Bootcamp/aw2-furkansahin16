@@ -1,10 +1,20 @@
-﻿namespace SimpraApi.Schema;
+﻿using SimpraApi.Base;
+
+namespace SimpraApi.Schema;
 public class StaffProfile : Profile
 {
-	public StaffProfile()
-	{
-		CreateMap<StaffCreateRequest, Staff>();
-		CreateMap<StaffUpdateRequest, Staff>();
-		CreateMap<Staff, StaffResponse>();
-	}
+    public StaffProfile()
+    {
+        CreateMap<StaffCreateRequest, Staff>()
+            .ForMember(x => x.FirstName, cfg => cfg.MapFrom(src => src.FirstName.NormalizeString()))
+            .ForMember(x => x.LastName, cfg => cfg.MapFrom(src => src.FirstName.NormalizeString()))
+            .ForMember(x => x.Email, cfg => cfg.MapFrom(src => src.FirstName.ToLower()));
+        CreateMap<StaffUpdateRequest, Staff>()
+            .ForMember(x => x.FirstName, cfg => cfg.MapFrom(src => src.FirstName.NormalizeString()))
+            .ForMember(x => x.LastName, cfg => cfg.MapFrom(src => src.FirstName.NormalizeString()))
+            .ForMember(x => x.Email, cfg => cfg.MapFrom(src => src.FirstName.ToLower()));
+        CreateMap<Staff, StaffResponse>()
+            .ForMember(x => x.DateOfBirth, cfg => cfg.MapFrom(src => src.DateOfBirth.ToString("g")))
+            .ForMember(x => x.CreatedAt, cfg => cfg.MapFrom(src => src.CreatedAt.ToString("g")));
+    }
 }

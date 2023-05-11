@@ -1,6 +1,8 @@
-﻿namespace SimpraApi.Schema;
+﻿using SimpraApi.Base;
 
-public class StaffCreateRequest : StaffRequest
+namespace SimpraApi.Schema;
+
+public class StaffCreateRequest : StaffRequest,IBaseCreateRequest
 {
 
 }

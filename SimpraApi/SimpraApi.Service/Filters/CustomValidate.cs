@@ -16,7 +16,7 @@ public class CustomValidate : ActionFilterAttribute
     {
         if (context.ActionDescriptor.Parameters.Any(x => x.Name == "request"))
         {
-            var validator = (IValidator)Activator.CreateInstance(this._validatorType);
+            var validator = (IValidator)Activator.CreateInstance(this._validatorType)!;
 
             if (!context.ActionArguments.ContainsKey("request"))
             {
@@ -26,7 +26,7 @@ public class CustomValidate : ActionFilterAttribute
 
             var model = context.ActionArguments["request"];
 
-            var validationContext = new ValidationContext<object>(model);
+            var validationContext = new ValidationContext<object>(model!);
 
             var validationResult = validator.Validate(validationContext);
 

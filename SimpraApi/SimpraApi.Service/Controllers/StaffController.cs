@@ -11,8 +11,8 @@ public class StaffController : BaseApiController
         _staffService = staffService;
     }
 
-    [HttpGet("{id}")]
     [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpGet("{id}")]
     public async Task<IResponse> GetStaff(int id)
     {
         return await _staffService.GetByIdAsync(id);
@@ -22,20 +22,23 @@ public class StaffController : BaseApiController
     {
         return await _staffService.GetAllAsync();
     }
-    [HttpPost]
     [CustomValidate(typeof(StaffCreateRequestValidator))]
+    [ServiceFilter(typeof(EmailFilter))]
+    [HttpPost]
     public async Task<IResponse> Add(StaffCreateRequest request)
     {
         return await _staffService.CreateStaffAsync(request);
     }
-    [HttpPut]
+    [ServiceFilter(typeof(NotFoundFilter))]
     [CustomValidate(typeof(StaffUpdateRequestValidator))]
+    [ServiceFilter(typeof(EmailFilter))]
+    [HttpPut]
     public async Task<IResponse> Update(StaffUpdateRequest request)
     {
         return await _staffService.UpdateStaffAsync(request);
     }
-    [HttpDelete]
     [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpDelete]
     public async Task<IResponse> Delete(int id)
     {
         return await _staffService.DeleteStaffByIdAsync(id);
