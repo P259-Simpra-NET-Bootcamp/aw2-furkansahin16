@@ -12,8 +12,7 @@ public class StaffController : BaseApiController
     }
 
     [HttpGet("{id}")]
-    // TODO: Adding Not Found Filter
-    //[ServiceFilter(typeof(NotFoundFilter))]
+    [ServiceFilter(typeof(NotFoundFilter))]
     public async Task<IResponse> GetStaff(int id)
     {
         return await _staffService.GetByIdAsync(id);
@@ -36,6 +35,7 @@ public class StaffController : BaseApiController
         return await _staffService.UpdateStaffAsync(request);
     }
     [HttpDelete]
+    [ServiceFilter(typeof(NotFoundFilter))]
     public async Task<IResponse> Delete(int id)
     {
         return await _staffService.DeleteStaffByIdAsync(id);

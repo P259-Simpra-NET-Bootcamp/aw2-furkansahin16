@@ -29,7 +29,6 @@ public class StaffService : IStaffService
     }
     public async Task<IResponse> UpdateStaffAsync(StaffUpdateRequest request)
     {
-        if (await _repository.AnyAsync(x => x.Id == request.Id)) return new ErrorResponse(String.Format(Messages.GetError, ModelName,request.Id));
         var model = _mapper.Map<Staff>(request);
         await _repository.UpdateAsync(model);
         await _unitOfWork.SaveChangesAsync();
@@ -40,8 +39,8 @@ public class StaffService : IStaffService
     public async Task<IResponse> DeleteStaffByIdAsync(int id)
     {
         var model = await _repository.GetAsync(x => x.Id == id);
-        if (model is null) return new ErrorResponse(String.Format(Messages.GetError, ModelName,id));
         await _repository.DeleteAsync(model);
+        await _unitOfWork.SaveChangesAsync();
 
         return new SuccessResponse(String.Format(Messages.DeleteSuccess, ModelName));
     }
@@ -49,6 +48,7 @@ public class StaffService : IStaffService
     public async Task<IResponse> GetAllAsync()
     {
         if (await _repository.AnyAsync()) return new ErrorResponse(String.Format(Messages.ListError, ModelName));
+
         var models = await _repository.GetAllAsync(false);
 
         return new SuccessDataResponse<IEnumerable<StaffResponse>>(_mapper.Map<List<StaffResponse>>(models), String.Format(Messages.ListSuccess, ModelName));
@@ -56,8 +56,7 @@ public class StaffService : IStaffService
 
     public async Task<IResponse> GetByIdAsync(int id)
     {
-        var model = await _repository.GetAsync(x => x.Id == id);
-        if (model is null) return new ErrorResponse(String.Format(Messages.GetError, ModelName));
+        var model = await _repository.GetAsync(x => x.Id == id,false);
 
         return new SuccessDataResponse<StaffResponse>(_mapper.Map<StaffResponse>(model), String.Format(Messages.GetSuccess, ModelName));
     }
