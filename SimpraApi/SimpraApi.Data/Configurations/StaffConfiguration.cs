@@ -22,6 +22,6 @@ public class StaffConfiguration : SoftDeletableEntityConfiguration<Staff>
         builder.HasIndex(x => x.Email).IsUnique();
         builder.HasIndex(x => new { x.LastName, x.Country });
 
-        builder.HasData(DummyDataGenerator.GenerateDummyData(50));
+        builder.HasData(DummyDataGenerator.GenerateDummyData(20));
     }
 }
