@@ -9,7 +9,7 @@ public class StaffResponse : IBaseResponse
     public string Email { get; set; } = null!;
     public string Phone { get; set; } = null!;
     public string DateOfBirth { get; set; } = null!;
-    public string? AddressLine1 { get; set; }
+    public string? AddressLine { get; set; }
     public string? City { get; set; }
     public string Country { get; set; } = null!;
     public string? Province { get; set; }

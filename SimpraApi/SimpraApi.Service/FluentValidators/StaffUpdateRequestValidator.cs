@@ -19,7 +19,17 @@ public class StaffUpdateRequestValidator : AbstractValidator<StaffUpdateRequest>
                     .Length(10, 15).WithMessage("Phone length must be 10-15 character.")
                     .Matches(new Regex(@"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}")).WithMessage("Invalid phone format");
         RuleFor(x => x.DateOfBirth)
+                    .Must(x => x != "").WithMessage("Date of birth cannot be empty.");
+        Unless(x => x.DateOfBirth == "", () =>
+        {
+                    RuleFor(x => x.DateOfBirth)
+                    .Must(root => root.IsValidDate()).WithMessage("Invalid date format");
+        });
+        Unless(x => !x.DateOfBirth.IsValidDate(), () =>
+        {
+                     RuleFor(x => x.DateOfBirth)
                     .Must(root => root.CheckIfOlderThan18()).WithMessage("Staff must be at least 18 years old.");
+        });
         RuleFor(x => x.AddressLine)
                     .MaximumLength(50).WithMessage("Address line must be less than 50 character.");
         RuleFor(x => x.Country)

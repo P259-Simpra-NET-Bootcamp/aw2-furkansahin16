@@ -16,7 +16,7 @@ public class EmailFilter : ActionFilterAttribute
     }
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        if (!context.ActionDescriptor.Parameters.Any(x => x.Name == "request"))
+        if (context.ActionDescriptor.Parameters.Any(x => x.Name == "request"))
         {
             if (context.HttpContext.Request.Method == "POST")
             {

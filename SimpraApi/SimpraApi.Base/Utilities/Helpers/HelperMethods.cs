@@ -8,14 +8,23 @@ public static class HelperMethods
         return str;
     }
 
-    public static bool CheckIfOlderThan18(this DateTime date)
+    public static bool CheckIfOlderThan18(this string date)
     {
-        var today = DateTime.Today;
-        var age = today.Year - date.Year;
+        DateTime dateOfBirth;
+        if (DateTime.TryParse(date, out dateOfBirth))
+        {
+            var today = DateTime.Today;
+            var age = today.Year - dateOfBirth.Year;
 
-        if (date.Date > today.AddYears(-age))
-            age--;
+            if (dateOfBirth.Date > today.AddYears(-age))
+                age--;
 
-        return age >= 18;
+            return age >= 18;
+        }
+        return false;
+    }
+    public static bool IsValidDate(this string date)
+    {
+        return DateTime.TryParse(date, out _);
     }
 }
