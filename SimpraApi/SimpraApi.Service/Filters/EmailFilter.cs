@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using SimpraApi.Data;
+using System.Net;
 
 namespace SimpraApi.Service.Filters;
 
@@ -39,7 +40,7 @@ public class EmailFilter : ActionFilterAttribute
     {
         email = email.ToLower();
         return this.Table.Any(x => x.Email == email)
-            ? new ObjectResult(new ErrorResponse(String.Format(Messages.EmailError, email)))
+            ? new ObjectResult(new ErrorResponse(String.Format(Messages.EmailError, email),HttpStatusCode.Forbidden))
             : default;
     }
 }

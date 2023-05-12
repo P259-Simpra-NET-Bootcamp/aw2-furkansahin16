@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using SimpraApi.Data;
+using System.Net;
 
 namespace SimpraApi.Service.Filters;
 // TODO: Aynı veriyi hem serviste hem filter'da iki database'den arıyoruz. Kontrol et maliyetli mi?
@@ -59,7 +60,7 @@ public class NotFoundFilter : ActionFilterAttribute
         var findMethod = this.Table!.GetType().GetMethods().First(x => x.Name == "Find");
         var entity = findMethod.Invoke(this.Table, new object[] { new object[] { id } });
         return (entity is null)
-            ? new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, this.ModelName, id)))
+            ? new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, this.ModelName, id),HttpStatusCode.NotFound))
             : default;
     }
 }

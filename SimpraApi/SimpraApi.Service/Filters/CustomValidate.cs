@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Net;
 
 namespace SimpraApi.Service.Filters;
 
@@ -32,7 +33,7 @@ public class CustomValidate : ActionFilterAttribute
 
             if (!validationResult.IsValid)
             {
-                var response = new ErrorResponse("ValidationError");
+                var response = new ErrorResponse("ValidationError",HttpStatusCode.Forbidden);
                 if (validationResult.Errors.Any(x => x.PropertyName == "NullObject"))
                 {
                     context.Result = new BadRequestResult();

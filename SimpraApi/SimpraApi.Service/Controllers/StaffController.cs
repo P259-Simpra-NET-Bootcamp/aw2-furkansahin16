@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 namespace SimpraApi.Service.Controllers;
+
 public class StaffController : BaseApiController
 {
     private readonly IStaffService _staffService;
