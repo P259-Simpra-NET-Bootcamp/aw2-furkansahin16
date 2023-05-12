@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using SimpraApi.Data;
-using System.Reflection;
 
 namespace SimpraApi.Service.Filters;
 // TODO: Aynı veriyi hem serviste hem filter'da iki database'den arıyoruz. Kontrol et maliyetli mi?

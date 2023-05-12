@@ -15,7 +15,7 @@ public class StaffProfile : Profile
             .ForMember(x => x.LastName, cfg => cfg.MapFrom(src => src.FirstName.NormalizeString()))
             .ForMember(x => x.Email, cfg => cfg.MapFrom(src => src.FirstName.ToLower()));
         CreateMap<Staff, StaffResponse>()
-            .ForMember(x => x.DateOfBirth, cfg => cfg.MapFrom(src => src.DateOfBirth.ToString("g")))
+            .ForMember(x => x.DateOfBirth, cfg => cfg.MapFrom(src => src.DateOfBirth.ToString("d")))
             .ForMember(x => x.CreatedAt, cfg => cfg.MapFrom(src => src.CreatedAt.ToString("g")));
     }
 }

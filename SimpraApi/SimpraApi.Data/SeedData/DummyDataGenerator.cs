@@ -18,10 +18,10 @@ public static class DummyDataGenerator
             .RuleFor(x => x.Id, f => f.IndexFaker + 1)
             .RuleFor(x => x.FirstName, f => f.Person.FirstName)
             .RuleFor(x => x.LastName, f => f.Person.LastName)
-            .RuleFor(x => x.Email, f => f.Internet.Email().ToLower()) // TODO : Mail küçük harflere bakılacak.
+            .RuleFor(x => x.Email, f => f.Internet.Email().ToLower())
             .RuleFor(x => x.Phone, f => f.Phone.PhoneNumber("###########"))
             .RuleFor(x => x.DateOfBirth, f => f.Person.DateOfBirth)
-            .RuleFor(x => x.AddressLine, f => f.Address.SecondaryAddress().ClampLength(max: 50)) // TODO : Adres üretilmiyor. Bakılacak
+            .RuleFor(x => x.AddressLine, f => f.Address.SecondaryAddress().ClampLength(max: 50))
             .RuleFor(x => x.City, f => f.Address.City().ClampLength(max: 30))
             .RuleFor(x => x.Country, f => f.Address.Country().ClampLength(max: 20))
             .RuleFor(x => x.Province, f => f.Address.State().ClampLength(max: 30));

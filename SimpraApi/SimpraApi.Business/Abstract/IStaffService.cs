@@ -1,5 +1,5 @@
 ﻿namespace SimpraApi.Business;
-
+// TODO : Method summary'leri unutma
 public interface IStaffService
 {
     Task<IResponse> CreateStaffAsync(StaffCreateRequest request);
