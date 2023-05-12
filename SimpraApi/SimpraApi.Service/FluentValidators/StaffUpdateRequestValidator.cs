@@ -16,8 +16,7 @@ public class StaffUpdateRequestValidator : AbstractValidator<StaffUpdateRequest>
                     .EmailAddress(FluentValidation.Validators.EmailValidationMode.AspNetCoreCompatible).WithMessage("Invalid email format.")
                     .MaximumLength(64).WithMessage("Email must be less than 64 character.");
         RuleFor(x => x.Phone)
-                    .Length(10, 15).WithMessage("Phone length must be 10-15 character.")
-                    .Matches(new Regex(@"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}")).WithMessage("Invalid phone format");
+                    .Matches(new Regex(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$")).WithMessage("Invalid phone format");
         RuleFor(x => x.DateOfBirth)
                     .Must(x => x != "").WithMessage("Date of birth cannot be empty.");
         Unless(x => x.DateOfBirth == "", () =>
