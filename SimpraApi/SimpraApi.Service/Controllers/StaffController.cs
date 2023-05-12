@@ -38,7 +38,7 @@ public class StaffController : BaseApiController
         return await _staffService.UpdateStaffAsync(request);
     }
     [ServiceFilter(typeof(NotFoundFilter))]
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<IResponse> Delete(int id)
     {
         return await _staffService.DeleteStaffByIdAsync(id);

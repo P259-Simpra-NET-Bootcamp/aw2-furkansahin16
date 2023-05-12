@@ -30,7 +30,7 @@ public class EmailFilter : ActionFilterAttribute
                 var staff = this.Table.Find(request!.Id);
                 if(staff!.Email != request.Email.ToLower())
                 {
-                    context.Result = CheckIfMailExist(staff!.Email);
+                    context.Result = CheckIfMailExist(request!.Email);
                 }
             }
         }
