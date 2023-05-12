@@ -2,7 +2,7 @@
 
 namespace SimpraApi.Schema;
 
-public class StaffCreateRequest : StaffRequest,IBaseCreateRequest
+public class StaffCreateRequest : StaffRequest, IBaseCreateRequest
 {
 
 }

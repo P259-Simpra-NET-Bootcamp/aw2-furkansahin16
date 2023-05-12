@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 namespace SimpraApi.Service.Controllers;
-// TODO : Filter Apisi yazılacak
 public class StaffController : BaseApiController
 {
     private readonly IStaffService _staffService;
