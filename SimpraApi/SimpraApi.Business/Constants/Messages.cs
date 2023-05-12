@@ -17,5 +17,7 @@ public static class Messages
     public const string GetError = "{0} with id:'{1}' cannot be found";
     public const string ListError = "{0} list have no data";
     public const string EmailError = "Email address: '{0}' is already in use.";
+    public const string DbError = "An error occurred during saving process.";
+    public const string DbErrorTransaction = "An error occurred during saving process. All changes have been undone";
     #endregion
 }

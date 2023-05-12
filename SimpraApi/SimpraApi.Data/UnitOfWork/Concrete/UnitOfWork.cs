@@ -1,4 +1,7 @@
-﻿namespace SimpraApi.Data;
+﻿using SimpraApi.Base;
+using System.Net;
+
+namespace SimpraApi.Data;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly SimpraDbContext _context;
@@ -35,16 +38,23 @@ public class UnitOfWork : IUnitOfWork
         Clean(true);
     }
 
-    public async Task<DbUpdateException?> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async Task<IResponse?> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             await _context.SaveChangesAsync(cancellationToken);
-            return default;
+            return null;
         }
-        catch (DbUpdateException ex)
+        catch (Exception ex)
         {
-            return new DbUpdateException("An error is occured in saving process!" + ex.HelpLink);
+            var response = new ErrorDataResponse<Object>(ex.Data, ex.Message, HttpStatusCode.InternalServerError);
+            response.Errors.AddRange(new string[]
+            {
+                $"Help Link: {ex.HelpLink}",
+                $"Source: {ex.Source}",
+                $"Inner Exception: {ex.InnerException?.Message}"
+            });
+            return response;
         }
         finally
         {
@@ -52,7 +62,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public async Task<DbUpdateException?> SaveChangesAsyncWithTransaction(CancellationToken cancellationToken = default)
+    public async Task<IResponse?> SaveChangesAsyncWithTransaction(CancellationToken cancellationToken = default)
     {
         using (var transaction = await _context.Database.BeginTransactionAsync())
         {
@@ -60,12 +70,19 @@ public class UnitOfWork : IUnitOfWork
             {
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-                return default;
+                return null;
             }
             catch (DbUpdateException ex)
             {
                 await transaction.RollbackAsync();
-                return new DbUpdateException("An error is occured in saving process!" + ex.HelpLink);
+                var response = new ErrorDataResponse<Object>(ex.Data, ex.Message, HttpStatusCode.InternalServerError);
+                response.Errors.AddRange(new string[]
+                {
+                    $"Help Link: {ex.HelpLink}",
+                    $"Source: {ex.Source}",
+                    $"Inner Exception: {ex.InnerException?.Message}"
+                });
+                return response;
             }
             finally
             {
