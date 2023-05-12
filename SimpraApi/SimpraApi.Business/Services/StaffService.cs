@@ -1,4 +1,6 @@
-﻿namespace SimpraApi.Business.Services;
+﻿using System.Linq.Expressions;
+
+namespace SimpraApi.Business.Services;
 public class StaffService : IStaffService
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -56,8 +58,28 @@ public class StaffService : IStaffService
 
     public async Task<IResponse> GetByIdAsync(int id)
     {
-        var model = await _repository.GetAsync(x => x.Id == id,false);
+        var model = await _repository.GetAsync(x => x.Id == id, false);
 
         return new SuccessDataResponse<StaffResponse>(_mapper.Map<StaffResponse>(model), String.Format(Messages.GetSuccess, ModelName));
+    }
+
+    public async Task<IResponse> GetAllByFilter(StaffFilter filter)
+    {
+        var expressions = new List<Expression<Func<Staff, bool>>>();
+
+        expressions.Add(x => x.LastName.ToLower().Contains(filter.LastName?? ""));
+        expressions.Add(x => x.Country.ToLower().Contains(filter.Country ?? ""));
+
+        var finalExpression = expressions.Aggregate((Expression<Func<Staff, bool>>)null, (current, expression) =>
+        {
+            if (current == null) return expression;
+            var invoked = Expression.Invoke(expression, current.Parameters);
+            return Expression.Lambda<Func<Staff, bool>>(Expression.AndAlso(current.Body, invoked), current.Parameters);
+        });
+
+        var models = await _repository.GetAllAsync(finalExpression, false);
+        return models.Any()
+            ? new SuccessDataResponse<IEnumerable<StaffResponse>>(_mapper.Map<List<StaffResponse>>(models),String.Format(Messages.ListSuccess, ModelName))
+            : new ErrorResponse(String.Format(Messages.ListError, ModelName));
     }
 }

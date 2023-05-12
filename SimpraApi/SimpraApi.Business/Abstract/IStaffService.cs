@@ -7,5 +7,6 @@ public interface IStaffService
     Task<IResponse> UpdateStaffAsync(StaffUpdateRequest request);
     Task<IResponse> DeleteStaffByIdAsync(int id);
     Task<IResponse> GetAllAsync();
+    Task<IResponse> GetAllByFilter(StaffFilter filter);
     Task<IResponse> GetByIdAsync(int id);
 }

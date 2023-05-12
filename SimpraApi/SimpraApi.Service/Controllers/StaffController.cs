@@ -43,4 +43,9 @@ public class StaffController : BaseApiController
     {
         return await _staffService.DeleteStaffByIdAsync(id);
     }
+    [HttpGet("[action]")]
+    public async Task<IResponse> Filter([FromQuery]StaffFilter filter)
+    {
+        return await _staffService.GetAllByFilter(filter);
+    }
 }
