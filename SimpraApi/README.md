@@ -1,6 +1,6 @@
 # AW2-SimparApi
 
-##API Documentation
+## API Documentation
 API documentation for SimpraApi is available on [Documentation(Postman)](https://github.com/your-username/AW2-SimparApi).
 
 ## Project Description
@@ -45,6 +45,7 @@ To configure the database type (MSSQL or PostgreSQL), you can modify the connect
     "PostgreSql": "User ID=[YourUserId];Password=[YourPassword];Server=localhost;Port=5435;Database=[YourDbName];Integrated Security=true;Pooling=true;"
   }
 }
+```
 
 **Database Migrations**
 To install the migration and create the database using Entity Framework, you have two opitons:
