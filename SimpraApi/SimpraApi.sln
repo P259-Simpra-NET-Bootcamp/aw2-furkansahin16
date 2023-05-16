@@ -7,13 +7,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpraApi.Base", "SimpraApi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpraApi.Domain", "SimpraApi.Domain\SimpraApi.Domain.csproj", "{9B2DEF24-B6C4-4308-9A75-D46DDCB76006}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpraApi.Data", "SimpraApi.Data\SimpraApi.Data.csproj", "{57F4EE5E-BFB1-45F9-A871-39A6F23D6C44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpraApi.Data", "SimpraApi.Data\SimpraApi.Data.csproj", "{57F4EE5E-BFB1-45F9-A871-39A6F23D6C44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpraApi.Business", "SimpraApi.Business\SimpraApi.Business.csproj", "{D24A5874-CD1D-42A7-9EB4-CDCD59EA0028}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpraApi.Business", "SimpraApi.Business\SimpraApi.Business.csproj", "{D24A5874-CD1D-42A7-9EB4-CDCD59EA0028}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpraApi.Service", "SimpraApi.Service\SimpraApi.Service.csproj", "{192DF6A9-1349-4F32-A907-72D20CBFB8A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpraApi.Service", "SimpraApi.Service\SimpraApi.Service.csproj", "{192DF6A9-1349-4F32-A907-72D20CBFB8A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpraApi.Schema", "SimpraApi.Schema\SimpraApi.Schema.csproj", "{15709243-71B8-48DE-8585-B7F61B46D478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpraApi.Schema", "SimpraApi.Schema\SimpraApi.Schema.csproj", "{15709243-71B8-48DE-8585-B7F61B46D478}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D6F55BEA-E03F-46AD-93FE-EE2A7058DCA9}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
