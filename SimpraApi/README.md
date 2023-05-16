@@ -34,7 +34,8 @@ To configure the database type (MSSQL or PostgreSQL), you can modify the connect
 
 1. Open the `appsettings.json` file in your project.
 2. Locate the `"ConnectionStrings"` section.
-3. Set the appropriate connection string for either `MsSql`or `PostgreSql`.
+3. Set the `DbType` for either `MsSql` or `PostgreSql`,
+4. Set the appropriate connection string for either `MsSql`or `PostgreSql`.
 
 **Sample Connection String Configuration:**
 
