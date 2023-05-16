@@ -60,6 +60,10 @@ public class CacheResourceFilter : Attribute, IResourceFilter
         {
             cacheKey += $"_{argument.Key}:'{argument.Value}'";
         }
+        foreach(var query in context.HttpContext.Request.Query)
+        {
+            cacheKey += $"_{query.Key}:'{query.Value}'";
+        }
 
         return cacheKey;
     }
