@@ -67,7 +67,7 @@ To install the migration and create the database using Entity Framework, you hav
 The SimpraApi project includes Swagger integration for easy API exploration. After running project locally, you can access the Swagger UI using the following URL:
 `https://localhost:{port}/swagger/index.html`
 
-### Fluent Validators**
+### Fluent Validators
 The following validation formats are suitable:
 
 1. **Example Phone Formats**:
