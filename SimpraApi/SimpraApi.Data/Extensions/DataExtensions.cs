@@ -27,8 +27,8 @@ public static class DataExtensions
         {
             _ = dbType switch
             {
-                "MsSql" => opt.UseSqlServer(dbConfig),
-                "PostgreSql" => opt.UseNpgsql(dbConfig),
+                "MsSql" => opt.UseSqlServer(dbConfig,opt=>opt.EnableRetryOnFailure()),
+                "PostgreSql" => opt.UseNpgsql(dbConfig,opt=>opt.EnableRetryOnFailure()),
                 _ => throw dbTypeError
             };
         });
