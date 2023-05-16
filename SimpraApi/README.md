@@ -14,16 +14,16 @@ AW2-SimpraApi is an API project that enables CRUD operations on Staff entities. 
 - Bogus
 
 ## Installation
-To run the SimparApi project locally, you can choose either of the following options:
+To run the SimpraApi project locally, you can choose either of the following options:
 
 1. **Using Git Command Line**:
    - Clone the repository from GitHub using the command: `git clone [repository URL]`
-   - Navigate to the project directory: `cd SimparApi`
+   - Navigate to the project directory: `cd SimpraApi`
    - Build the project: `dotnet build`
    - Run the project: `dotnet run`
 
 2. **Using GitHub**:
-   - Visit the project repository on GitHub: [SimpraApi](https://github.com/your-username/AW2-SimparApi)
+   - Visit the project repository on GitHub: [SimpraApi](https://github.com/your-username/AW2-SimpraApi)
    - Click on the **Code** button and select **Download ZIP**
    - Extract the downloaded ZIP file
    - Open the project in your preferred development environment
