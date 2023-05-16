@@ -34,11 +34,13 @@ public class NotFoundFilter : ActionFilterAttribute
 
     private void CheckEntityFromBody(ActionExecutingContext context)
     {
-        if (context.ActionDescriptor.Parameters.Any(x => x.Name == "request"))
+        if (!context.ActionArguments.ContainsKey("request"))
         {
-            var request = context.ActionArguments["request"] as IBaseUpdateRequest;
-            context.Result = CheckIfExist(request!.Id);
+            context.Result = new BadRequestResult();
+            return;
         }
+        var request = context.ActionArguments["request"] as IBaseUpdateRequest;
+        context.Result = CheckIfExist(request!.Id);
     }
 
     private void CheckEntityFromQuery(ActionExecutingContext context)
@@ -61,7 +63,7 @@ public class NotFoundFilter : ActionFilterAttribute
         var findMethod = this.Table!.GetType().GetMethods().First(x => x.Name == "Find");
         var entity = findMethod.Invoke(this.Table, new object[] { new object[] { id } }) as BaseEntity;
         return (entity is null || entity.Status == Status.Deleted)
-            ? new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, this.ModelName, id),HttpStatusCode.NotFound))
+            ? new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, this.ModelName, id), HttpStatusCode.NotFound))
             : default;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace SimpraApi.Service.Controllers;
 
+[ServiceFilter(typeof(CacheResourceFilter))]
 public class StaffController : BaseApiController
 {
     private readonly IStaffService _staffService;
@@ -13,14 +14,12 @@ public class StaffController : BaseApiController
 
     [HttpGet("{id}")]
     [ServiceFilter(typeof(NotFoundFilter))]
-    [ServiceFilter(typeof(CacheResourceFilter))]
     public async Task<IResponse> GetStaff(int id)
     {
         return await _staffService.GetByIdAsync(id);
     }
 
     [HttpGet]
-    [ServiceFilter(typeof(CacheResourceFilter))]
     public async Task<IResponse> GetAll()
     {
         return await _staffService.GetAllAsync();
@@ -51,7 +50,6 @@ public class StaffController : BaseApiController
     }
 
     [HttpGet("[action]")]
-    [ServiceFilter(typeof(CacheResourceFilter))]
     public async Task<IResponse> Filter([FromQuery]StaffFilter filter)
     {
         return await _staffService.GetAllByFilter(filter);

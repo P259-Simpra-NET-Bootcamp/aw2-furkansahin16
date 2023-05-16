@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using SimpraApi.Base.Utilities.Results;
 using System.Net;
+using System.Reflection;
 
 namespace SimpraApi.Service.Filters;
 
@@ -22,21 +23,33 @@ public class CacheResourceFilter : Attribute, IResourceFilter
 
     public void OnResourceExecuted(ResourceExecutedContext context)
     {
-        if (context.Result is ObjectResult objectResult
-            && objectResult.Value is CommonResponse response
-            && response.StatusCode == HttpStatusCode.OK)
+        if (string.Equals(context.HttpContext.Request.Method, "GET", StringComparison.OrdinalIgnoreCase))
         {
-            _memoryCache.Set(this._cacheKey, response, this._cacheDuration);
+            if (context.Result is ObjectResult result && result.Value is CommonResponse response && response.IsSuccess)
+            {
+                _memoryCache.Set(this._cacheKey, response, this._cacheDuration);
+            }
         }
+        else
+        {
+            if (context.Result is ObjectResult result && result.Value is CommonResponse response && response.IsSuccess)
+            {
+                ClearCache();
+            }
+        }
+
     }
 
     public void OnResourceExecuting(ResourceExecutingContext context)
     {
-        this._cacheKey = GetCacheKey(context);
-
-        if (_memoryCache.TryGetValue(this._cacheKey, out object cachedResult))
+        if (string.Equals(context.HttpContext.Request.Method, "GET", StringComparison.OrdinalIgnoreCase))
         {
-            context.Result = new ObjectResult(cachedResult);
+            this._cacheKey = GetCacheKey(context);
+
+            if (_memoryCache.TryGetValue(this._cacheKey, out object cachedResult))
+            {
+                context.Result = new ObjectResult(cachedResult);
+            }
         }
     }
 
@@ -49,5 +62,15 @@ public class CacheResourceFilter : Attribute, IResourceFilter
         }
 
         return cacheKey;
+    }
+
+    private void ClearCache()
+    {
+        Type T = _memoryCache.GetType();
+        PropertyInfo prop = T!.GetProperty("EntriesCollection", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Public)!;
+        object innerCache = prop.GetValue(_memoryCache)!;
+        Type T2 = innerCache.GetType();
+        MethodInfo clearMethod = T2.GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public)!;
+        clearMethod.Invoke(innerCache, null);
     }
 }
