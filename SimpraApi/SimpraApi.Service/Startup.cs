@@ -15,6 +15,7 @@ public class Startup
         services.AddCustomSwaggerExtension();
         services.AddFluentValidationExtension();
         services.AddBusinessServices(Configuration);
+        services.AddMemoryCache();
         services.AddFiltersExtensions();
     }
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -5,6 +5,7 @@ public static class FilterExtensions
     {
         services.AddScoped<NotFoundFilter>();
         services.AddScoped<EmailFilter>();
+        services.AddScoped<CacheResourceFilter>();
         return services;
     }
 }

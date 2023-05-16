@@ -32,10 +32,11 @@ public class StaffService : IStaffService
     }
     public async Task<IResponse> UpdateStaffAsync(StaffUpdateRequest request)
     {
-        var model = _mapper.Map<Staff>(request);
-        await _repository.UpdateAsync(model);
+        var model = await _repository.GetAsync(x => x.Id == request.Id);
+        var updatedModel = _mapper.Map(request, model);
+        await _repository.UpdateAsync(updatedModel!);
 
-        return (await _unitOfWork.SaveChangesAsync()) ?? 
+        return (await _unitOfWork.SaveChangesAsync()) ??
             new SuccessDataResponse<StaffResponse>(_mapper.Map<StaffResponse>(model), String.Format(Messages.UpdateSuccess, ModelName), HttpStatusCode.Accepted);
     }
 
@@ -44,7 +45,7 @@ public class StaffService : IStaffService
         var model = await _repository.GetAsync(x => x.Id == id);
         await _repository.DeleteAsync(model!);
 
-        return (await _unitOfWork.SaveChangesAsync()) ?? 
+        return (await _unitOfWork.SaveChangesAsync()) ??
             new SuccessResponse(String.Format(Messages.DeleteSuccess, ModelName), HttpStatusCode.OK);
     }
 

@@ -19,7 +19,7 @@ public class UnitOfWork : IUnitOfWork
         {
             var repositoryType = typeof(EfRepository<>).MakeGenericType(entityType);
             var instance = Activator.CreateInstance(repositoryType, _context);
-            _repositories.Add(entityType, instance);
+            _repositories.Add(entityType, instance!);
         }
         return (IRepository<TEntity>)_repositories[entityType];
     }
