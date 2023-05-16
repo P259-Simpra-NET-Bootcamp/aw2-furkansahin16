@@ -4,7 +4,7 @@
 API documentation for SimpraApi is available on [Documentation(Postman)](https://documenter.getpostman.com/view/24685326/2s93kxcRoe#ef2cfd71-844b-4afa-9f5b-d97420752105).
 
 ## Project Description
-AW2-SimparApi is an API project that enables CRUD operations on Staff entities. It is built using ASP.NET Core Web API 6.0. This project utilizes various technologies and frameworks, including:
+AW2-SimpraApi is an API project that enables CRUD operations on Staff entities. It is built using ASP.NET Core Web API 6.0. This project utilizes various technologies and frameworks, including:
 
 - Entity Framework
 - AutoMapper
