@@ -47,7 +47,7 @@ To configure the database type (MSSQL or PostgreSQL), you can modify the connect
 }
 ```
 
-**Database Migrations**
+###Database Migrations**
 To install the migration and create the database using Entity Framework, you have two opitons:
 (The first migration file for MSSQL is installed on the solution. If you are going to use MSSQL, you can go directly to the 'update database' phase. If you are going to use PostgreSQL, you need to delete the migration file and create new migration.)
 
@@ -63,32 +63,31 @@ To install the migration and create the database using Entity Framework, you hav
    - Create migration: `add migration [MigrationName]`
    - Update database: `update database`
 
-**Swagger Integration**
+###Swagger Integration**
 The SimpraApi project includes Swagger integration for easy API exploration. After running project locally, you can access the Swagger UI using the following URL:
 `https://localhost:{port}/swagger/index.html`
 
-**Fluent Validators**
+### Fluent Validators**
 The following validation formats are suitable:
 
-*Example Phone Formats
-  -`+############`
-  -`############`
-  -`###########`
-  -`##########`
-  -`###-###-####`
-  -`###-#######`
-*Example DateOfBirth Formats
-  -`DD.MM.YYYY`
-  -`DD/MM/YYYY`
-  -`DD-MM-YYYY`
-  -`DD MM YYYY`
-  -`DD Month YYYY`
-  -`Month DD, YYYY`
-  -`YYYY-MM-DD`
-  -`YYYY/MM/DD`
-  -`YYYY.MM.DD`
-  -`YYYY MM DD`
-  -`YYYY-MM-DD`
-  -`YYYY Month DD`
-  -`YYYY, DD Month`
-
+1. **Example Phone Formats**:
+    -`+############`
+    -`############`
+    -`###########`
+    -`##########`
+    -`###-###-####`
+    -`###-#######`
+2. **Example DateOfBirth Formats**:
+    -`DD.MM.YYYY`
+    -`DD/MM/YYYY`
+    -`DD-MM-YYYY`
+    -`DD MM YYYY`
+    -`DD Month YYYY`
+    -`Month DD, YYYY`
+    -`YYYY-MM-DD`
+    -`YYYY/MM/DD`
+    -`YYYY.MM.DD`
+    -`YYYY MM DD`
+    -`YYYY-MM-DD`
+    -`YYYY Month DD`
+     -`YYYY, DD Month`
