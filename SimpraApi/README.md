@@ -1,4 +1,4 @@
-# AW2-SimparApi
+# AW2-SimpraApi
 
 ## API Documentation
 API documentation for SimpraApi is available on [Documentation(Postman)](https://github.com/your-username/AW2-SimparApi).
