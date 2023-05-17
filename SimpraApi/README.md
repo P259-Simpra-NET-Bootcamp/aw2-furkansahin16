@@ -60,7 +60,7 @@ To install the migration and create the database using Entity Framework, you hav
 
 2. **Package Manager Console**:
    - Open the package manager console in Visual Studio.
-   - Select the 'SimpraApi.Service' from 'Default project' dropdown.
+   - Select the 'SimpraApi.Data' from 'Default project' dropdown.
    - Create migration: `add migration [MigrationName]`
    - Update database: `update database`
 
