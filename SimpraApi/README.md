@@ -4,7 +4,7 @@
 API documentation for SimpraApi is available on [Documentation(Postman)](https://documenter.getpostman.com/view/24685326/2s93kxcRoe#ef2cfd71-844b-4afa-9f5b-d97420752105).
 
 ## Project Description
-AW2-SimparApi is an API project that enables CRUD operations on Staff entities. It is built using ASP.NET Core Web API 6.0. This project utilizes various technologies and frameworks, including:
+AW2-SimpraApi is an API project that enables CRUD operations on Staff entities. It is built using ASP.NET Core Web API 6.0. This project utilizes various technologies and frameworks, including:
 
 - Entity Framework
 - AutoMapper
@@ -14,16 +14,16 @@ AW2-SimparApi is an API project that enables CRUD operations on Staff entities. 
 - Bogus
 
 ## Installation
-To run the SimparApi project locally, you can choose either of the following options:
+To run the SimpraApi project locally, you can choose either of the following options:
 
 1. **Using Git Command Line**:
    - Clone the repository from GitHub using the command: `git clone [repository URL]`
-   - Navigate to the project directory: `cd SimparApi`
+   - Navigate to the project directory: `cd SimpraApi`
    - Build the project: `dotnet build`
    - Run the project: `dotnet run`
 
 2. **Using GitHub**:
-   - Visit the project repository on GitHub: [SimpraApi](https://github.com/your-username/AW2-SimparApi)
+   - Visit the project repository on GitHub: [SimpraApi](https://github.com/your-username/AW2-SimpraApi)
    - Click on the **Code** button and select **Download ZIP**
    - Extract the downloaded ZIP file
    - Open the project in your preferred development environment
@@ -34,7 +34,8 @@ To configure the database type (MSSQL or PostgreSQL), you can modify the connect
 
 1. Open the `appsettings.json` file in your project.
 2. Locate the `"ConnectionStrings"` section.
-3. Set the appropriate connection string for either `MsSql`or `PostgreSql`.
+3. Set the `DbType` for either `MsSql` or `PostgreSql`,
+4. Set the appropriate connection string for either `MsSql`or `PostgreSql`.
 
 **Sample Connection String Configuration:**
 
@@ -59,7 +60,7 @@ To install the migration and create the database using Entity Framework, you hav
 
 2. **Package Manager Console**:
    - Open the package manager console in Visual Studio.
-   - Select the 'SimpraApi.Service' from 'Default project' dropdown.
+   - Select the 'SimpraApi.Data' from 'Default project' dropdown.
    - Create migration: `add migration [MigrationName]`
    - Update database: `update database`
 
