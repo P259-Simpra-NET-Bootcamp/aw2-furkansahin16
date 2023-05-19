@@ -25,18 +25,12 @@ public class UnitOfWork : IUnitOfWork
     }
     private void Clean(bool disposing)
     {
-        if (!_disposed)
-        {
-            if (disposing) _context.Dispose();
-        }
+        if (!_disposed && disposing) _context.Dispose();
         _disposed = true;
         GC.SuppressFinalize(this);
     }
 
-    public void Dispose()
-    {
-        Clean(true);
-    }
+    public void Dispose() => Clean(true);
 
     public async Task<IResponse?> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -56,38 +50,36 @@ public class UnitOfWork : IUnitOfWork
             });
             return response;
         }
-        finally
-        {
-            this.Dispose();
-        }
+        finally { this.Dispose(); }
     }
 
     public async Task<IResponse?> SaveChangesAsyncWithTransaction(CancellationToken cancellationToken = default)
     {
-        using (var transaction = await _context.Database.BeginTransactionAsync())
+        var strategy = _context.Database.CreateExecutionStrategy();
+        IResponse? response = null;
+        await strategy.ExecuteAsync(async () =>
         {
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-                return null;
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                var response = new ErrorDataResponse<Object>(ex.Data, ex.Message, HttpStatusCode.InternalServerError);
-                response.Errors.AddRange(new string[]
+                response = new ErrorDataResponse<Object>(ex.Data, ex.Message, HttpStatusCode.InternalServerError)
                 {
-                    $"Help Link: {ex.HelpLink}",
-                    $"Source: {ex.Source}",
-                    $"Inner Exception: {ex.InnerException?.Message}"
-                });
-                return response;
+                    Errors = new()
+                    {
+                        $"Help Link: {ex.HelpLink}",
+                        $"Source: {ex.Source}",
+                        $"Inner Exception: {ex.InnerException?.Message}"
+                    }
+                };
             }
-            finally
-            {
-                this.Dispose();
-            }
-        }
+            finally { this.Dispose(); }
+        });
+        return response;
     }
 }

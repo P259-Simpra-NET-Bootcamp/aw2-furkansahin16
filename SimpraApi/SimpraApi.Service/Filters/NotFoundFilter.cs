@@ -5,7 +5,6 @@ using SimpraApi.Data;
 using System.Net;
 
 namespace SimpraApi.Service.Filters;
-// TODO: Aynı veriyi hem serviste hem filter'da iki database'den arıyoruz. Kontrol et maliyetli mi?
 public class NotFoundFilter : ActionFilterAttribute
 {
     private readonly SimpraDbContext _context;
