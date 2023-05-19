@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
-using SimpraApi.Data;
-using System.Net;
-
-namespace SimpraApi.Service.Filters;
+﻿namespace SimpraApi.Service.Filters;
 
 public class EmailFilter : ActionFilterAttribute
 {
@@ -28,7 +22,7 @@ public class EmailFilter : ActionFilterAttribute
             {
                 var request = context.ActionArguments["request"] as StaffUpdateRequest;
                 var staff = this.Table.Find(request!.Id);
-                if(staff!.Email != request.Email.ToLower())
+                if (staff!.Email != request.Email.ToLower())
                 {
                     context.Result = CheckIfMailExist(request!.Email);
                 }
@@ -40,7 +34,7 @@ public class EmailFilter : ActionFilterAttribute
     {
         email = email.ToLower();
         return this.Table.Any(x => x.Email == email)
-            ? new ObjectResult(new ErrorResponse(String.Format(Messages.EmailError, email),HttpStatusCode.Forbidden))
+            ? new ObjectResult(new ErrorResponse(String.Format(Messages.EmailError, email), HttpStatusCode.Forbidden))
             : default;
     }
 }

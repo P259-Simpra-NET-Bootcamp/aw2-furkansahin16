@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace SimpraApi.Service.Controllers;
+﻿namespace SimpraApi.Service.Controllers;
 
 [ServiceFilter(typeof(CacheResourceFilter))]
 public class StaffController : BaseApiController
@@ -50,7 +48,7 @@ public class StaffController : BaseApiController
     }
 
     [HttpGet("[action]")]
-    public async Task<IResponse> Filter([FromQuery]StaffFilter filter)
+    public async Task<IResponse> Filter([FromQuery] StaffFilter filter)
     {
         return await _staffService.GetAllByFilter(filter);
     }

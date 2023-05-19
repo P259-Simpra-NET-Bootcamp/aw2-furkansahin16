@@ -1,68 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
-using SimpraApi.Data;
-using System.Net;
-
-namespace SimpraApi.Service.Filters;
+﻿namespace SimpraApi.Service.Filters;
 public class NotFoundFilter : ActionFilterAttribute
 {
     private readonly SimpraDbContext _context;
-    private string ModelName = string.Empty;
-    private object? Table;
+    private readonly IMemoryCache _memoryCache;
+    private string _modelName = string.Empty;
 
-    public NotFoundFilter(SimpraDbContext context)
+    public NotFoundFilter(SimpraDbContext context, IMemoryCache memoryCache)
     {
         _context = context;
+        _memoryCache = memoryCache;
     }
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        var controllerName = context.Controller.GetType().Name;
-        this.ModelName = controllerName.Replace("Controller", string.Empty);
-        var entityType = _context.Model.GetEntityTypes().FirstOrDefault(x => x.ClrType.Name == this.ModelName)!.ClrType;
-        var dbSetMethod = typeof(DbContext).GetMethods().First(x => x.Name == "Set" && !x.GetParameters().Any()).MakeGenericMethod(entityType);
-        this.Table = dbSetMethod.Invoke(_context, null)!;
+        SetCacheKey(context, out string cacheKey, out this._modelName);
+        int id;
+        bool isBadRequest = false;
 
         switch (context.HttpContext.Request.Method)
         {
-            case "DELETE":
-            case "GET": CheckEntityFromQuery(context); break;
-            case "PUT": CheckEntityFromBody(context); break;
+            case "GET":
+            case "DELETE": GetIdFromPath(context, out isBadRequest, out id); break;
+            case "PUT": GetIdFromBody(context, out isBadRequest, out id); break;
+            default: return;
         }
+
+        if (isBadRequest) context.Result = new ObjectResult(new ErrorResponse("Invalid id format!", HttpStatusCode.BadRequest));
+        else if (_memoryCache.TryGetValue(cacheKey, out IEnumerable<IBaseResponse> data) &&
+            string.Equals(context.HttpContext.Request.Method, "GET", StringComparison.OrdinalIgnoreCase))
+        {
+            context.Result = CheckFromCache(id, data);
+        }
+        else context.Result = CheckFromContext(id);
     }
 
-    private void CheckEntityFromBody(ActionExecutingContext context)
+    private ObjectResult CheckFromCache(int id, IEnumerable<IBaseResponse> data)
     {
-        if (!context.ActionArguments.ContainsKey("request"))
+        var entity = data.FirstOrDefault(x => x.Id == id);
+        return (entity is null)
+                 ? new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, this._modelName, id), HttpStatusCode.NotFound))
+                 : new ObjectResult(new SuccessDataResponse<object>(entity, String.Format(Messages.GetSuccess, this._modelName), HttpStatusCode.OK));
+    }
+
+    private ObjectResult? CheckFromContext(int id)
+    {
+        var entityType = _context.Model.GetEntityTypes().FirstOrDefault(x => x.ClrType.Name == this._modelName)!.ClrType;
+        var dbSetMethod = typeof(DbContext).GetMethods().First(x => x.Name == "Set" && !x.GetParameters().Any()).MakeGenericMethod(entityType);
+        var table = dbSetMethod.Invoke(_context, null);
+        var findMethod = table!.GetType().GetMethods().First(x => x.Name == "Find");
+        var entity = findMethod.Invoke(table, new object[] { new object[] { id } }) as BaseEntity;
+        return (entity is null || entity.Status == Status.Deleted)
+            ? new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, this._modelName, id), HttpStatusCode.NotFound))
+            : default;
+    }
+
+    private void GetIdFromBody(ActionExecutingContext context, out bool isBadRequest, out int id)
+    {
+        if (context.ActionArguments.ContainsKey("request"))
         {
-            context.Result = new BadRequestResult();
+            var request = context.ActionArguments["request"] as IBaseUpdateRequest;
+            isBadRequest = request is null || request.Id < 0;
+            id = request?.Id ?? default;
             return;
         }
-        var request = context.ActionArguments["request"] as IBaseUpdateRequest;
-        context.Result = CheckIfExist(request!.Id);
+        isBadRequest = true;
+        id = default;
     }
 
-    private void CheckEntityFromQuery(ActionExecutingContext context)
+    private void GetIdFromPath(ActionExecutingContext context, out bool isBadRequest, out int id)
     {
-        if (context.ActionDescriptor.Parameters.Any(x => x.Name == "id"))
+        if (context.ActionDescriptor.Parameters.Any(x => x.Name == "id") &&
+            context.ActionArguments.Any(x => x.Key == "id"))
         {
-            if (!context.ActionArguments.Any(x => x.Key == "id"))
-            {
-                context.Result = new BadRequestResult();
-                return;
-            }
-            int id = (int)context.ActionArguments["id"]!;
-
-            context.Result = CheckIfExist(id);
+            id = (int)context.ActionArguments["id"]!;
+            isBadRequest = id < 0;
+            return;
         }
+        isBadRequest = true;
+        id = default;
     }
 
-    private ObjectResult? CheckIfExist(int id)
+    private void SetCacheKey(ActionExecutingContext context, out string cacheKey, out string modelName)
     {
-        var findMethod = this.Table!.GetType().GetMethods().First(x => x.Name == "Find");
-        var entity = findMethod.Invoke(this.Table, new object[] { new object[] { id } }) as BaseEntity;
-        return (entity is null || entity.Status == Status.Deleted)
-            ? new ObjectResult(new ErrorResponse(String.Format(Messages.GetError, this.ModelName, id), HttpStatusCode.NotFound))
-            : default;
+        modelName = context.ActionDescriptor.RouteValues["controller"]!;
+        cacheKey = $"{modelName}_Get";
     }
 }
